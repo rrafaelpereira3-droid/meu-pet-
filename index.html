@@ -3,101 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Meu Pet</title>
 
 <style>
+
 body{
-    font-family:Arial;
-    background:#7fd8ff;
-    text-align:center;
     margin:0;
+    font-family:Arial;
+    background:linear-gradient(#8de0ff,#ffffff);
+    text-align:center;
+    overflow:hidden;
 }
 
-#pet{
-    font-size:120px;
+h1{
+    margin-top:20px;
+}
+
+#game{
     margin-top:40px;
 }
 
-button{
-    padding:12px 18px;
-    margin:6px;
-    font-size:18px;
-    border:none;
-    border-radius:10px;
+#caixa,#ovo{
+    font-size:120px;
     cursor:pointer;
 }
 
-#msg{
+#caixa{
+    animation:balanco 1s infinite;
+}
+
+@keyframes balanco{
+    50%{
+        transform:rotate(5deg);
+    }
+}
+
+#ovo{
+    display:none;
+}
+
+#cachorro{
+    display:none;
+    margin:auto;
+    width:150px;
+    height:120px;
+    background:#c98b45;
+    border-radius:70px 70px 40px 40px;
+    position:relative;
+}
+
+#cachorro:before,
+#cachorro:after{
+    content:"";
+    position:absolute;
+    top:-20px;
+    width:45px;
+    height:60px;
+    background:#8b5a2b;
+    border-radius:50%;
+}
+
+#cachorro:before{
+    left:10px;
+}
+
+#cachorro:after{
+    right:10px;
+}
+
+.olho{
+    width:15px;
+    height:15px;
+    background:black;
+    border-radius:50%;
+    position:absolute;
+    top:45px;
+}
+
+.esq{
+    left:35px;
+}
+
+.dir{
+    right:35px;
+}
+
+#boca{
+    position:absolute;
+    bottom:25px;
+    left:65px;
+}
+
+#gui{
+    display:none;
+}
+
+button{
+    padding:12px;
+    margin:5px;
+    border-radius:10px;
+    border:0;
+    font-size:17px;
+}
+
+#mensagem{
     font-size:20px;
-    margin:20px;
     font-weight:bold;
 }
 
 video{
-    display:none;
-    width:300px;
-    border-radius:15px;
+    margin-top:20px;
 }
+
 </style>
+
 </head>
 
 <body>
 
-<h1>🐣 Meu Pet</h1>
+<h1>🐾 Meu Pet</h1>
 
-<div id="pet">🥚</div>
+<div id="game">
 
-<div id="msg">Estou com fome...</div>
+<div id="mensagem">
+Uma caixa misteriosa apareceu...
+</div>
 
-<button onclick="alimentar()">🍎 Alimentar</button>
-<button onclick="brincar()">🎮 Brincar</button>
-<button onclick="selfie()">📷 Selfie</button>
+<div id="caixa" onclick="abrirCaixa()">
+📦
+</div>
+
+
+<div id="ovo" onclick="abrirOvo()">
+🥚
+</div>
+
+
+<div id="cachorro">
+
+<div class="olho esq"></div>
+<div class="olho dir"></div>
+
+<div id="boca">
+👅
+</div>
+
+</div>
+
+
+<div id="gui">
+
+<h2>🐶 Byte</h2>
+
+❤️ Felicidade: 100%
+
+<br>
+
+🍖 Fome: 100%
 
 <br><br>
 
-<video id="camera" autoplay></video>
 
+<button>
+🍎 Alimentar
+</button>
+
+<button>
+🎾 Brincar
+</button>
+
+<button onclick="abrirCamera()">
+📷 Câmera
+</button>
+
+
+</div>
+
+    
 <script>
 
-let fome = 0;
-let felicidade = 0;
+let toques = 0;
+let selfies = 0;
 
-function alimentar(){
-    fome++;
-    document.getElementById("pet").innerHTML="😋";
-    document.getElementById("msg").innerHTML="Obrigado pela comida!";
-}
 
-function brincar(){
-    felicidade++;
-    document.getElementById("pet").innerHTML="😁";
-    document.getElementById("msg").innerHTML="Estou muito feliz!";
-}
+function abrirCaixa(){
 
-async function selfie(){
+    toques++;
 
-document.getElementById("msg").innerHTML=
-"O pet quer tirar uma selfie com você!";
+    if(toques == 1){
+        mensagem.innerHTML =
+        "A caixa está tremendo... 📦";
+    }
 
-try{
 
-const stream =
-await navigator.mediaDevices.getUserMedia({video:true});
+    if(toques == 2){
+        mensagem.innerHTML =
+        "Algo está tentando sair... 😨";
+    }
 
-const video=document.getElementById("camera");
 
-video.srcObject=stream;
-video.style.display="block";
+    if(toques == 3){
 
-}catch{
+        caixa.style.display = "none";
 
-alert("Você negou a câmera.");
+        ovo.style.display = "block";
+
+        mensagem.innerHTML =
+        "Um ovo apareceu! Toque nele 🥚";
+
+    }
 
 }
 
+
+
+function abrirOvo(){
+
+    ovo.style.display = "none";
+
+    cachorro.style.display = "block";
+
+
+    mensagem.innerHTML =
+    "Um novo amigo nasceu! 🐶";
+
+
+    setTimeout(()=>{
+
+        gui.style.display = "block";
+
+        mensagem.innerHTML =
+        "Cuide bem do Byte!";
+
+    },2000);
+
 }
+
+
+
+async function abrirCamera(){
+
+    selfies++;
+
+
+    mensagem.innerHTML =
+    "Byte: Vamos tirar uma selfie? 📷";
+
+
+    try{
+
+
+        let stream =
+        await navigator.mediaDevices.getUserMedia({
+            video:true
+        });
+
+
+
+        let video =
+        document.createElement("video");
+
+
+        video.srcObject = stream;
+
+        video.autoplay = true;
+
+        video.style.width = "300px";
+
+        video.style.borderRadius = "15px";
+
+
+        document.body.appendChild(video);
+
+
+
+        if(selfies >= 2){
+
+
+            setTimeout(()=>{
+
+
+                document.body.style.background =
+                "black";
+
+
+                mensagem.innerHTML =
+                "Eu sei onde você está... 👁️";
+
+
+                mensagem.style.color =
+                "white";
+
+
+            },3000);
+
+
+
+            setTimeout(()=>{
+
+
+                document.body.style.background =
+                "linear-gradient(#8de0ff,#ffffff)";
+
+
+                mensagem.innerHTML =
+                "😂 Brincadeira! Eu não sei nada sobre você.";
+
+
+                mensagem.style.color =
+                "black";
+
+
+            },6000);
+
+
+        }
+
+
+
+        setTimeout(()=>{
+
+
+            mensagem.innerHTML =
+            "Byte: Você é bonito(a)! Onde você mora?";
+
+
+        },9000);
+
+
+
+    }
+
+    catch{
+
+
+        mensagem.innerHTML =
+        "Você não permitiu a câmera.";
+
+    }
+
+
+}
+
 
 </script>
+
 
 </body>
 </html>
