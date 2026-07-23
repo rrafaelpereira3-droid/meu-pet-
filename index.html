@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Pet</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#7fd8ff;
+    text-align:center;
+    margin:0;
+}
+
+#pet{
+    font-size:120px;
+    margin-top:40px;
+}
+
+button{
+    padding:12px 18px;
+    margin:6px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+#msg{
+    font-size:20px;
+    margin:20px;
+    font-weight:bold;
+}
+
+video{
+    display:none;
+    width:300px;
+    border-radius:15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🐣 Meu Pet</h1>
+
+<div id="pet">🥚</div>
+
+<div id="msg">Estou com fome...</div>
+
+<button onclick="alimentar()">🍎 Alimentar</button>
+<button onclick="brincar()">🎮 Brincar</button>
+<button onclick="selfie()">📷 Selfie</button>
+
+<br><br>
+
+<video id="camera" autoplay></video>
+
+<script>
+
+let fome = 0;
+let felicidade = 0;
+
+function alimentar(){
+    fome++;
+    document.getElementById("pet").innerHTML="😋";
+    document.getElementById("msg").innerHTML="Obrigado pela comida!";
+}
+
+function brincar(){
+    felicidade++;
+    document.getElementById("pet").innerHTML="😁";
+    document.getElementById("msg").innerHTML="Estou muito feliz!";
+}
+
+async function selfie(){
+
+document.getElementById("msg").innerHTML=
+"O pet quer tirar uma selfie com você!";
+
+try{
+
+const stream =
+await navigator.mediaDevices.getUserMedia({video:true});
+
+const video=document.getElementById("camera");
+
+video.srcObject=stream;
+video.style.display="block";
+
+}catch{
+
+alert("Você negou a câmera.");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
